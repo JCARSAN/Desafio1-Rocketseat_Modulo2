@@ -1,0 +1,185 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Desafio complementar, módulo 2 curso de Node.js da Rocketseat",
+        "description": "Desafio complementar de fazer a documentação de uma API com Swagger",
+        "version": "1.0.0",
+        "contact": {
+            "email": "jcarsan1000@gmail.com"
+        }
+    },
+    "paths":{
+        "/users": {
+            "post": {
+                "tags": ["Users"],
+                "summary": "Create a new user",
+                "description": "Create a user for our application using its name and email.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "example": {
+                                    "name": "Julio C. Santos",
+                                    "email": "example@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "This email is already registered"
+                    }
+                }
+            },
+            "get": {
+                "tags": ["Users"],
+                "summary": "List all users",
+                "description": "List all user to an admin user",
+                "parameters":[
+                    {
+                        "name":"user_id",
+                        "in":"header",
+                        "description": "A user uuid object who identify an admin user",
+                        "required":true,
+                        "allowEmptyValue": false,
+                        "schema":{
+                            "type":"string",
+                            "example":"8d6f57e5-3301-4255-be1c-66edd152edba"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "string"
+                                            },
+                                            "admin": {
+                                                "type": "boolean"
+                                            },
+                                            "created_at": {
+                                                "type":"string",
+                                                "format": "full-data"
+                                            },
+                                            "updated_at": {
+                                                "type":"string",
+                                                "format": "full-data"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "This user does not have permission of admin"
+                    }
+                }
+            }
+        },
+        "/users/{userId}": {
+            "get":{
+                "tags":["Users"],
+                "summary": "Find a user by ID",
+                "parameters": [
+                    {
+                        "name":"userId",
+                        "in":"path",
+                        "description": "A user uuid object who identify the user",
+                        "required": true,
+                        "allowEmptyValue": false,
+                        "schema":{
+                            "type":"string",
+                            "example":"8d6f57e5-3301-4255-be1c-66edd152edba"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content":{
+                            "application/json":{
+                                "schema": {
+                                    "type":"object",
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "id": {
+                                            "type": "string"
+                                        },
+                                        "admin": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type":"string",
+                                            "format": "full-data"
+                                        },
+                                        "updated_at": {
+                                            "type":"string",
+                                            "format": "full-data"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User not found!"
+                    }
+                }
+            }
+        },
+        "/users/{userId}/admin":{
+            "patch":{
+                "tags":["Users"],
+                "summary": "Turn a user into an admin",
+                "description":"Turn a user into an admin",
+                "requestBody":{
+                    "content":{
+                        "multipart/form-data":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "user_id":{
+                                        "type":"string",
+                                        "example":"8d6f57e5-3301-4255-be1c-66edd152edba"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
